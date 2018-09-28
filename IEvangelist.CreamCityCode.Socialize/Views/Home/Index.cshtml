@@ -5,6 +5,7 @@
     <meta name="twitter:url" content="@Model.ImageUrl">
     <meta property="og:image" content="@Model.ImageUrl">
     <meta property="og:url" content="@Model.ImageUrl">
+    <meta itemprop="image" content="@Model.ImageUrl">
 }
 
 <div class="container-fluid">
@@ -58,7 +59,7 @@
         return this.parseMetaTagsAndShare('https://twitter.com/intent/tweet', {
             url: window.location.href,
             text: getMetaContent('og:description', 'property'),
-            hashtags: 'DeveloperCommunity,CreamCityCode',
+            hashtags: getMetaContent('twitter:hashtags', 'name'),
             via: getMetaContent('twitter:site', 'name')
         });
     }
@@ -87,11 +88,11 @@
         if (metaTags) {
             queryParams =
                 Object.entries(metaTags)
-                      .map(([key, metaTag]) =>
-                          metaTag
-                              ? `${key}=${encodeURIComponent(metaTag)}`
-                              : ''
-            ).join('&');
+                    .map(([key, metaTag]) =>
+                        metaTag
+                            ? `${key}=${encodeURIComponent(metaTag)}`
+                            : ''
+                    ).join('&');
         }
         return queryParams;
     }
