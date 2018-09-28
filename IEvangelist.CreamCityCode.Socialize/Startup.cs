@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IEvangelist.CreamCityCode.Socialize.Configuration;
+using IEvangelist.CreamCityCode.Socialize.Providers;
+using IEvangelist.CreamCityCode.Socialize.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 
 namespace IEvangelist.CreamCityCode.Socialize
 {
@@ -24,15 +29,22 @@ namespace IEvangelist.CreamCityCode.Socialize
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-
+            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddResponseCompression(
+                options => options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+                    {
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/gif"
+                    }));
+
+            // Map services
+            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddSingleton<IContainerProvider, ContainerProvider>();
+
+            // Map appsettings.json to class options
+            services.Configure<ImageRepositoryOptions>(Configuration.GetSection(nameof(ImageRepositoryOptions)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +60,14 @@ namespace IEvangelist.CreamCityCode.Socialize
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseHttpsRedirection()
+               .UseResponseCompression()
+               .UseStaticFiles(new StaticFileOptions
+               {
+                   // 6 hour cache
+                   OnPrepareResponse =
+                       _ => _.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=21600"
+               });
 
             app.UseMvc(routes =>
             {
