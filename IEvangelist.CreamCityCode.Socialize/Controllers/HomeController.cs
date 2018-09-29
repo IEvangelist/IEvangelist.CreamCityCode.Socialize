@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using IEvangelist.CreamCityCode.Socialize.Models;
 using IEvangelist.CreamCityCode.Socialize.Services;
@@ -12,11 +13,19 @@ namespace IEvangelist.CreamCityCode.Socialize.Controllers
         [Route("/{id?}")]
         public async Task<IActionResult> Index(
             [FromRoute] string id,
-            [FromServices] IImageRepository imageRepository) 
-            => View(new ShareViewModel { ImageUrl = await imageRepository.GetImageUriAsync(id) });
+            [FromServices] IImageRepository imageRepository)
+            => View(new ShareViewModel
+                    {
+                        AllImageUrls = string.IsNullOrWhiteSpace(id) 
+                            ? await imageRepository.GetAllImageUrisAsync() 
+                            : new[] { await imageRepository.GetImageUriAsync(id) }
+                    });
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() 
-            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            => View(new ErrorViewModel
+                    {
+                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                    });
     }
 }

@@ -2,7 +2,9 @@
 using IEvangelist.CreamCityCode.Socialize.Providers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IEvangelist.CreamCityCode.Socialize.Services
@@ -46,6 +48,28 @@ namespace IEvangelist.CreamCityCode.Socialize.Services
             });
 
             return cachedUri;
+        }
+
+        public async Task<Uri[]> GetAllImageUrisAsync()
+        {
+            try
+            {
+                var continuation = new BlobContinuationToken();
+                var container = await _containerProvider.GetContainerAsync();
+                var blobs = await container.ListBlobsSegmentedAsync(continuation);
+                
+                return blobs.Results
+                            .Select(blob => blob.Uri)
+                            .OrderByDescending(uri => uri.ToString())
+                            .ToArray();
+            }
+            catch (Exception ex)
+            {
+                ex.TryLogException(_logger);
+
+                // Worst case scenario, fallback to empty array.
+                return new Uri[0];
+            }
         }
     }
 }
