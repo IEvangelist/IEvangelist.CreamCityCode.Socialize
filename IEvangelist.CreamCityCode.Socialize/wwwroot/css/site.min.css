@@ -330,3 +330,7 @@ section.google {
         section.google div:hover {
             background: #dd4b39;
         }
+
+.image {
+    display: none;
+}
