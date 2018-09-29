@@ -331,6 +331,32 @@ section.google {
             background: #dd4b39;
         }
 
+.image-grid {
+    display: grid;
+    grid-template: 'one two' 'three four';
+}
+
 .image {
     display: none;
+}
+
+#one {
+    padding: 10px;
+    grid-area: one;
+    text-align: right;
+}
+#two {
+    padding: 10px;
+    grid-area: two;
+    text-align: left;
+}
+#three {
+    padding: 10px;
+    grid-area: three;
+    text-align: right;
+}
+#four {
+    padding: 10px;
+    grid-area: four;
+    text-align: left;
 }

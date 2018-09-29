@@ -11,10 +11,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 body-content">
-            <div class="wrapper">
 
-                @if (Model.IsSingleImage)
-                {
+
+            @if (Model.IsSingleImage)
+            {
+                <div class="wrapper">
                     <div class="gif">
                         <img src="@Model.ImageUrl" alt="Cream City Code Selfie Animation" />
                     </div>
@@ -47,63 +48,95 @@
                             </svg>
                         </div>
                     </section>
-                }
-                else
-                {
-                    <div class="gif">
-                        <div id="sliderDiv">
-                            @foreach (var uri in Model.AllImageUrls)
-                            {
-                                <img class="image" src="@uri" alt="Cream City Code 2018" />
-                            }
-                        </div>
-                        
-                        <script type="text/javascript">
-                            $(function () {
-                                const ImageInit = function () {
-                                    this.images = $('#sliderDiv').children('img');
-                                    this.imgCnt = this.images.length;
-                                    this.tic = 0;
-                                    this.switchTime = 4250;
-                                    this.pause = false;
-                                };
-
-                                ImageInit.prototype = {
-                                    slideShow: function () {
-                                        var that = this;
-                                        if (!that.pause) {
-                                            that.moveNext();
-                                            window.setTimeout(function () {
-                                                that.slideShow();
-                                            }, that.switchTime);
-                                        }
-                                    },
-                                    moveNext: function () {
-                                        var that = this;
-                                        $(that.images[that.tic]).fadeOut(400, function () {
-                                            if (that.tic === that.imgCnt - 1) that.tic = 0;
-                                            else that.tic++;
-                                            console.log(that.tic);
-                                            $(that.images[that.tic]).fadeIn();
-                                        });
-                                    },
-                                    movePrev: function () {
-
-                                    },
-                                    pauseSlideShow: function () {
-
-                                    }
-                                }
-                                const start = new ImageInit();
-                                console.log(start.imgCnt);
-                                start.slideShow();
-                            });
-                        </script>
+                </div>
+            }
+            else
+            {
+                <div class="image-grid">
+                    <div id="one">
+                        @foreach (var uri in Model.FirstQuarter)
+                        {
+                            <img class="image" src="@uri" alt="Cream City Code 2018" />
+                        }
                     </div>
-                }
+                    <div id="two">
+                        @foreach (var uri in Model.SecondQuarter)
+                        {
+                            <img class="image" src="@uri" alt="Cream City Code 2018" />
+                        }
+                    </div>
+                    <div id="three">
+                        @foreach (var uri in Model.ThirdQuarter)
+                        {
+                            <img class="image" src="@uri" alt="Cream City Code 2018" />
+                        }
+                    </div>
+                    <div id="four">
+                        @foreach (var uri in Model.FourthQuarter)
+                        {
+                            <img class="image" src="@uri" alt="Cream City Code 2018" />
+                        }
+                    </div>
+                </div>
 
-            </div>
+                <script type="text/javascript">
+                    $(function () {
+                        const SlideShow = (function () {
+                            function SlideShow(selector, interval) {
+                                if (interval === void 0) {
+                                    interval = 4250;
+                                }
+                                this.selector = selector;
+                                this.interval = interval;
+                                this.index = 0;
+                                this.fadeOutTime = 400;
+                                this.fadeInTime = 10;
+                                this.isPaused = false;
+                                this.images = $(selector).children('img');
+                                this.imageCount = this.images.length;
+                            }
+
+                            SlideShow.prototype.start = function () {
+                                var _this = this;
+                                if (!this.isPaused) {
+                                    this.advance();
+                                    window.setTimeout(function() {
+                                            _this.start();
+                                        },
+                                        this.randomNumber(3500, 7500));
+                                }
+                            };
+                            SlideShow.prototype.randomNumber = function (min, max) {
+                                return Math.floor(Math.random() * (max - min + 1)) + min;
+                            };
+                            SlideShow.prototype.advance = function () {
+                                var _this = this;
+                                $(this.images[this.index]).fadeOut(this.fadeOutTime,
+                                    function () {
+                                        if (_this.index === _this.imageCount - 1) {
+                                            _this.index = 0;
+                                        } else {
+                                            ++_this.index;
+                                        }
+                                        $(_this.images[_this.index]).fadeIn(_this.fadeInTime);
+                                    });
+                            };
+                            return SlideShow;
+                        }());
+
+                        const slideShows = [
+                            new SlideShow('#one'),
+                            new SlideShow('#two'),
+                            new SlideShow('#three'),
+                            new SlideShow('#four')
+                        ];
+                        slideShows.forEach(ss => ss.start());
+                    });
+                </script>
+            }
+
         </div>
+
     </div>
 </div>
 
@@ -153,11 +186,11 @@
             if (metaTags) {
                 queryParams =
                     Object.entries(metaTags)
-                    .map(([key, metaTag]) =>
-                        metaTag
-                        ? `${key}=${encodeURIComponent(metaTag)}`
-                        : ''
-                    ).join('&');
+                        .map(([key, metaTag]) =>
+                            metaTag
+                                ? `${key}=${encodeURIComponent(metaTag)}`
+                                : ''
+                        ).join('&');
             }
             return queryParams;
         }
