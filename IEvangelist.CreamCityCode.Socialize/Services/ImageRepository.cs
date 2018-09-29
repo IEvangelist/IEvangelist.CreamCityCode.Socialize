@@ -58,10 +58,13 @@ namespace IEvangelist.CreamCityCode.Socialize.Services
                 var container = await _containerProvider.GetContainerAsync();
                 var blobs = await container.ListBlobsSegmentedAsync(continuation);
                 
-                return blobs.Results
-                            .Select(blob => blob.Uri)
-                            .OrderByDescending(uri => uri.ToString())
-                            .ToArray();
+                var urls = blobs.Results
+                                .Select(blob => blob.Uri)
+                                .OrderByDescending(uri => uri.ToString())
+                                .Distinct()
+                                .ToArray();
+
+                return urls;
             }
             catch (Exception ex)
             {

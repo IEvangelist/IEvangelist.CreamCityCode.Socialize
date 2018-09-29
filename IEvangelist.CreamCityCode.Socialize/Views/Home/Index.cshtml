@@ -80,11 +80,11 @@
                                     },
                                     moveNext: function () {
                                         var that = this;
-                                        $(that.images[that.tic]).fadeOut('fast', function () {
+                                        $(that.images[that.tic]).fadeOut(400, function () {
                                             if (that.tic === that.imgCnt - 1) that.tic = 0;
                                             else that.tic++;
                                             console.log(that.tic);
-                                            $(that.images[that.tic]).fadeIn('fast');
+                                            $(that.images[that.tic]).fadeIn();
                                         });
                                     },
                                     movePrev: function () {
