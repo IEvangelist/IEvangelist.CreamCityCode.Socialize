@@ -167,6 +167,7 @@ ol {
         #four > img {
             -webkit-box-shadow: 0 0 80px black;
             box-shadow: 0 0 80px black;
+            border: solid #ecd290 2px;
         }
 
     .wrapper section {
