@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "ccc-socialize",
+  "private": true,
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-uglify": "^3.0.0",
+    "merge-stream": "^1.0.1"
+  }
+}

@@ -15,4 +15,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <Target Name="MyPreCompileTarget" BeforeTargets="Build">
+    <Exec Command="gulp" />
+  </Target>
+
 </Project>
