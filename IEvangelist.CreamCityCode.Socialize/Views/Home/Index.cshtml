@@ -202,7 +202,9 @@
         function onPinterestClick() {
             return this.parseMetaTagsAndShare('http://pinterest.com/pin/create/button',
                 {
-                    url: window.location.href
+                    url: window.location.href,
+                    description: getMetaContent('og:description', 'property'),
+                    media: getMetaContent('og:image', 'property')
                 });
         }
 
