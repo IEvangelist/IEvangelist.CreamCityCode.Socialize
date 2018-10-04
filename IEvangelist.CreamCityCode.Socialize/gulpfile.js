@@ -1,4 +1,5 @@
-﻿var gulp = require('gulp'),
+﻿/// <binding BeforeBuild='default' />
+var gulp = require('gulp'),
     concat = require('gulp-concat'),
     cssmin = require('gulp-cssmin'),
     uglify = require('gulp-uglify'),
@@ -8,45 +9,31 @@
 
 var regex = {
     css: /\.css$/,
-    html: /\.(html|htm)$/,
     js: /\.js$/
 };
 
-const minJs = () => {
-    const tasks = getBundles(regex.js).map(bundle => {
+gulp.task('min:js',
+    () => merge(getBundles(regex.js).map(bundle => {
         return gulp.src(bundle.inputFiles, { base: '.' })
-            .pipe(concat(bundle.outputFileName))
-            .pipe(uglify())
-            .pipe(gulp.dest('.'));
-    });
-    return merge(tasks);
-};
-gulp.task('min:js', gulp.series(minJs));
+                   .pipe(concat(bundle.outputFileName))
+                   .pipe(uglify())
+                   .pipe(gulp.dest('.'));
+    })));
 
-const minCss = () => {
-    const tasks = getBundles(regex.css).map(bundle => {
+gulp.task('min:css',
+    () => merge(getBundles(regex.css).map(bundle => {
         return gulp.src(bundle.inputFiles, { base: '.' })
-            .pipe(concat(bundle.outputFileName))
-            .pipe(cssmin())
-            .pipe(gulp.dest('.'));
-    });
-    return merge(tasks);
-};
-gulp.task('min:css', gulp.series(minCss));
+                   .pipe(concat(bundle.outputFileName))
+                   .pipe(cssmin())
+                   .pipe(gulp.dest('.'));
+    })));
 
-const clean = () => {
-    const files = bundleconfig.map(bundle => {
-        return bundle.outputFileName;
-    });
+gulp.task('clean', () => {
+    return del(bundleconfig.map(bundle => bundle.outputFileName));
+});
 
-    return del(files);
-};
-gulp.task(clean);
-
-function getBundles(regexPattern) {
-    return bundleconfig.filter(bundle => {
-        return regexPattern.test(bundle.outputFileName);
-    });
-}
+const getBundles =
+    (regexPattern) => bundleconfig.filter(
+        bundle => regexPattern.test(bundle.outputFileName));
 
 gulp.task('default', gulp.series(['min:js', 'min:css']));

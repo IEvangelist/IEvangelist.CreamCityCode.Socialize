@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
-    <Exec Command="gulp" />
+    <Exec Command="gulp default" />
   </Target>
 
 </Project>
