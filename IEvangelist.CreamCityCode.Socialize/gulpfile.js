@@ -32,6 +32,11 @@ gulp.task('clean', () => {
     return del(bundleconfig.map(bundle => bundle.outputFileName));
 });
 
+gulp.task('watch', () => {
+    getBundles(regex.js).forEach(bundle => gulp.watch(bundle.inputFiles, gulp.series(['min:js'])));
+    getBundles(regex.css).forEach(bundle => gulp.watch(bundle.inputFiles, gulp.series(['min:css'])));
+});
+
 const getBundles =
     (regexPattern) => bundleconfig.filter(
         bundle => regexPattern.test(bundle.outputFileName));
