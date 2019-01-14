@@ -41,9 +41,7 @@ namespace IEvangelist.CreamCityCode.Socialize.Services
                 catch (Exception ex)
                 {
                     ex.TryLogException(_logger);
-
-                    // Worst case scenario, fallback to somewhat reasonable URI.
-                    return new Uri($"https://ievangelistphotobooth.blob.core.windows.net/photoboothimages/{id}");
+                    throw;
                 }
             });
 
