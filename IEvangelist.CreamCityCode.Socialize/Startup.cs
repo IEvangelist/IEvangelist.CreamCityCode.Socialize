@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using IEvangelist.CreamCityCode.Socialize.Configuration;
 using IEvangelist.CreamCityCode.Socialize.Providers;
 using IEvangelist.CreamCityCode.Socialize.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -33,11 +28,11 @@ namespace IEvangelist.CreamCityCode.Socialize
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddResponseCompression(
                 options => options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-                    {
-                                    "image/jpeg",
-                                    "image/png",
-                                    "image/gif"
-                    }));
+                {
+                    "image/jpeg",
+                    "image/png",
+                    "image/gif"
+                }));
 
             // Map services
             services.AddTransient<IImageRepository, ImageRepository>();
