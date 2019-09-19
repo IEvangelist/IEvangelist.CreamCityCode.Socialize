@@ -81,8 +81,7 @@ ol {
     border-width: 0px;
     color: whitesmoke;
     box-shadow: 0 0 80px #010101;
-    text-shadow: 0 0 20px #010101;
-}
+    text-shadow: 0 0 20px #010101;}
 
     .ccc-button.disabled,
     .ccc-button:disabled {
@@ -141,7 +140,7 @@ ol {
     -ms-grid-rows: (1fr)[3];
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 10px;
-    grid-template-areas: " linkedin gif gif twitter " " google gif gif facebook " "tumblr gif gif pinterest";
+    grid-template-areas: " linkedin gif gif twitter " " reddit gif gif facebook " "tumblr gif gif pinterest";
 }
 
     .wrapper .gif {
@@ -222,7 +221,7 @@ ol {
         grid-template-columns: repeat(2, 1fr);
         -ms-grid-rows: 510px 135px 135px;
         grid-template-rows: 510px 135px 135px;
-        grid-template-areas: " gif gif " " twitter facebook " " google linkedin " "pinterest tumblr";
+        grid-template-areas: " gif gif " " twitter facebook " " reddit linkedin " "pinterest tumblr";
     }
 
         .wrapper .gif {
@@ -257,7 +256,7 @@ ol {
 section.facebook div:hover, 
 section.twitter div:hover, 
 section.linkedin div:hover, 
-section.google div:hover, 
+section.reddit div:hover, 
 section.pinterest div:hover, 
 section.tumblr div:hover {
     color: #0e1a25;
@@ -271,7 +270,7 @@ section.tumblr div:hover {
     section.facebook div:hover svg, 
     section.twitter div:hover svg, 
     section.linkedin div:hover svg, 
-    section.google div:hover svg, 
+    section.reddit div:hover svg, 
     section.pinterest div:hover svg, 
     section.tumblr div:hover svg {
         -webkit-transform: scale(1.25);
@@ -329,21 +328,21 @@ section.linkedin {
             background: #00a0dc;
         }
 
-section.google {
+section.reddit {
     -ms-grid-row: 2;
     -ms-grid-column: 1;
-    grid-area: google;
+    grid-area: reddit;
     -webkit-box-shadow: 0 0 80px rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 80px rgba(255, 255, 255, 0.5);
 }
 
-    section.google div {
-        color: #dd4b39;
-        fill: #dd4b39;
+    section.reddit div {
+        color: #ff4500;
+        fill: #ff4500;
     }
 
-        section.google div:hover {
-            background: #dd4b39;
+        section.reddit div:hover {
+            background: #ff4500;
         }
 
 section.pinterest {

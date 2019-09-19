@@ -34,9 +34,9 @@ namespace IEvangelist.CreamCityCode.Socialize
             services.AddResponseCompression(
                 options => options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
                     {
-                                    "image/jpeg",
-                                    "image/png",
-                                    "image/gif"
+                        "image/jpeg",
+                        "image/png",
+                        "image/gif"
                     }));
 
             // Map services
@@ -69,12 +69,10 @@ namespace IEvangelist.CreamCityCode.Socialize
                        _ => _.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=21600"
                });
 
-            app.UseMvc(routes =>
-            {
+            app.UseMvc(routes => 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                    template: "{controller=Home}/{action=Index}/{id?}"));
         }
     }
 }
